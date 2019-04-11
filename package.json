@@ -1,0 +1,27 @@
+{
+  "name": "nodejs-swagger",
+  "version": "0.0.1",
+  "private": true,
+  "description": "New Swagger API Project",
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.12.3",
+    "mongodb": "^3.2.3",
+    "mongoose": "^5.5.1",
+    "swagger-express-mw": "^0.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.11",
+    "should": "^7.1.0",
+    "supertest": "^1.0.0"
+  },
+  "scripts": {
+    "start": "nodemon app.js",
+    "swagger-start": "swagger project start",
+    "swagger-edit": "swagger project edit",
+    "test": "swagger project test"
+  }
+}

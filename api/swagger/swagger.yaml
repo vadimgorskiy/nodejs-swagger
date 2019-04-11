@@ -1,0 +1,179 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Hello World App
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths 
+basePath: /api
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /cities:
+    x-swagger-router-controller: cities
+    get:
+      tags:
+      - cities
+      summary: Get cities
+      description: This can only be done by the logged in user
+      operationId: getCities
+      produces:
+      - application/json
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/CitiesResponse'
+        403:
+          description: Filed to authenticate token
+    post:
+      tags:
+      - cities
+      summary: Create city
+      description: This can only be done by the logged in user
+      operationId: createCity
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Created city object
+        required: true
+        schema:
+          $ref: '#/definitions/City'
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/City'
+        403:
+          description: Filed to authenticate token
+  /cities/{cityId}:
+    get:
+      tags:
+      - cities
+      summary: Get city by id
+      description: This can only be done by the logged in user
+      operationId: getCityById
+      produces:
+      - application/json
+      parameters:
+      - name: cityId
+        in: path
+        description: The id that needs to be fetched. 
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/CityResponse'
+        403:
+          description: Filed to authenticate token
+        404:
+          description: City not found
+    put:
+      tags:
+      - cities
+      summary: Updated city
+      description: This can only be done by the logged in user
+      operationId: updateCity
+      produces:
+      - application/json
+      parameters:
+      - name: cityId
+        in: path
+        description: The id that needs to be update. 
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Updated city object
+        required: true
+        schema:
+          $ref: '#/definitions/City'
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/CityResponse'
+        403:
+          description: Filed to authenticate token
+        404:
+          description: City not found
+    delete:
+      tags:
+      - cities
+      summary: Delete city
+      description: This can only be done by the logged in user
+      operationId: deleteCity
+      produces:
+      - application/json
+      parameters:
+      - name: cityId
+        in: path
+        description: The id that needs to be fetched. 
+        required: true
+        type: string
+      responses:
+        204:
+          description: successful operation
+        403:
+          description: Filed to authenticate token
+        404:
+          description: City not found
+  
+  /swagger:
+    x-swagger-pipe: swagger_raw
+# complex objects have schema definitions
+definitions:
+  
+  City:
+    type: object
+    properties:
+      _id:
+        type: string
+      country:
+        type: string
+      capital:
+        type: string
+      location:
+        type: object
+        properties:
+          lat:
+            type: number
+          long:
+            type: number
+      lastModifiedDate:
+        type: string
+  Cities:
+    type: array
+    items:
+      $ref: '#/definitions/City'
+      
+  CityResponse:
+    type: object
+    properties:
+      city:
+        $ref: '#/definitions/City'
+  CitiesResponse:
+    type: object
+    properties:
+      cities:
+        $ref: '#/definitions/Cities'
+  
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
